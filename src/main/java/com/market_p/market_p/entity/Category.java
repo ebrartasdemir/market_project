@@ -3,6 +3,10 @@ package com.market_p.market_p.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 import java.util.List;
 
@@ -12,6 +16,8 @@ public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @NotBlank(message = "Category name cannot be empty")
+    @Size(max = 25,message = "Category name cannot be longer than 25 characters.")
     private String name;
     private String description;
     @OneToMany(mappedBy="category")

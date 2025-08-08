@@ -1,5 +1,7 @@
 package com.market_p.market_p.service;
 
+import com.market_p.market_p.dto.ProductReqDto;
+import com.market_p.market_p.dto.ProductResDto;
 import com.market_p.market_p.entity.Product;
 import org.springframework.stereotype.Service;
 
@@ -7,11 +9,11 @@ import java.util.List;
 
 @Service
 public interface ProductService {
-    List<Product> getAllProducts();
-    List<Product> getProductsByCategoryId(int categoryId);
-    Product getProductById(int id);
-    List<Product> getProductByName(String name);
-    void createProduct(Product product);
-    void updateProduct(int id,Product product);
+    List<ProductResDto> getAllProducts();
+    List<ProductResDto> getProductsByCategoryId(int categoryId);
+    ProductResDto getProductById(int id);
+    List<ProductResDto> getProductByName(String name);
+    void createProduct(ProductReqDto product);
+    void updateProduct(int id, ProductReqDto product);
     void deleteProduct(int id);
 }

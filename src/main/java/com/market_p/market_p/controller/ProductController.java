@@ -1,8 +1,14 @@
 package com.market_p.market_p.controller;
 
+import com.market_p.market_p.dto.ApiResponse;
+import com.market_p.market_p.dto.ProductReqDto;
+import com.market_p.market_p.dto.ProductResDto;
 import com.market_p.market_p.entity.Product;
 import com.market_p.market_p.service.ProductService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,31 +20,86 @@ public class ProductController {
     ProductService productService;
 
     @GetMapping("/products")
-    public List<Product> getAllProduct(){
-        return  productService.getAllProducts();
+    public ResponseEntity<ApiResponse<List<ProductResDto>>> getAllProduct(){
+        try{
+            List<ProductResDto> productList=  productService.getAllProducts();
+            ApiResponse<List<ProductResDto>> productApiResponse = new ApiResponse<>("All products listed successfully.",productList);
+            return ResponseEntity.ok(productApiResponse);
+        }
+        catch(Exception e){
+            ApiResponse<List<ProductResDto>> apiResponse= new ApiResponse<>("Products cannot be listed, something went wrong.\n"+e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiResponse);        }
     }
     @GetMapping("/product/{id}")
-    public Product getProduct(@PathVariable int id){
-        return  productService.getProductById(id);
+    public ResponseEntity<ApiResponse<ProductResDto>> getProduct(@PathVariable int id){
+        try{
+            ProductResDto product= productService.getProductById(id);
+            ApiResponse<ProductResDto> productApiResponse = new ApiResponse<>("Product with id: "+id+" found successfully.",product);
+            return ResponseEntity.ok(productApiResponse);
+        }
+        catch(Exception e){
+            ApiResponse<ProductResDto> apiResponse= new ApiResponse<>("Product cannot be found, something went wrong.\n"+e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiResponse);
+        }
     }
     @GetMapping("/products/category/{categoryId}")
-    public List<Product> getProductByCategoryId(@PathVariable int categoryId){
-        return  productService.getProductsByCategoryId(categoryId);
+    public ResponseEntity<ApiResponse<List<ProductResDto>>> getProductByCategoryId(@PathVariable int categoryId){
+        try{
+            List<ProductResDto> productList=productService.getProductsByCategoryId(categoryId);
+            ApiResponse<List<ProductResDto>> productApiResponse = new ApiResponse<>("All products listed successfully.",productList);
+            return ResponseEntity.ok(productApiResponse);
+        }
+        catch(Exception e){
+            ApiResponse<List<ProductResDto>> apiResponse= new ApiResponse<>("Products cannot be listed, something went wrong.\n"+e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiResponse);
+        }
     }
-    @GetMapping("/product/name/{name}")
-    public List<Product> getProductByName(@PathVariable String name){
-        return  productService.getProductByName(name);
+    @GetMapping("/product/name/{name}")//%like%
+    public ResponseEntity<ApiResponse<List<ProductResDto>>> getProductByName(@PathVariable String name){
+        try{
+            List<ProductResDto> productList=productService.getProductByName(name);
+            ApiResponse<List<ProductResDto>> productApiResponse = new ApiResponse<>("All products listed successfully.",productList);
+            return ResponseEntity.ok(productApiResponse);
+        }
+        catch(Exception e){
+            ApiResponse<List<ProductResDto>> apiResponse= new ApiResponse<>("Products cannot be listed, something went wrong.\n"+e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiResponse);
+        }
     }
     @PostMapping("/product")
-    public void addProduct(@RequestBody Product product){
-        productService.createProduct(product);
+    public ResponseEntity<ApiResponse<String>> addProduct(@Valid @RequestBody ProductReqDto product){
+        try{
+            productService.createProduct(product);
+            ApiResponse<String> productApiResponse = new ApiResponse<>("Product created successfully.");
+            return ResponseEntity.status(HttpStatus.CREATED).body(productApiResponse);
+        }
+        catch(Exception e){
+            ApiResponse<String> apiResponse= new ApiResponse<>("Products cannot be created, something went wrong.\n"+e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiResponse);
+        }
     }
     @PutMapping("/product/{id}")
-    public void updateProduct(@PathVariable int id,@RequestBody Product product){
-        productService.updateProduct(id, product);
+    public ResponseEntity<ApiResponse<String>> updateProduct(@PathVariable int id,@Valid @RequestBody ProductReqDto product){
+        try{
+            productService.updateProduct(id, product);
+            ApiResponse<String> productApiResponse = new ApiResponse<>("Product updated successfully.");
+            return ResponseEntity.ok(productApiResponse);
+        }
+        catch(Exception e){
+            ApiResponse<String> apiResponse= new ApiResponse<>("Products cannot be updated, something went wrong.\n"+e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiResponse);
+        }
     }
     @DeleteMapping("/product/{id}")
-    public void deleteProduct(@PathVariable int id){
-        productService.deleteProduct(id);
+    public ResponseEntity<ApiResponse<String>> deleteProduct(@PathVariable int id){
+        try{
+            productService.deleteProduct(id);
+            ApiResponse<String> productApiResponse = new ApiResponse<>("Product deleted successfully.");
+            return ResponseEntity.ok(productApiResponse);
+        }
+        catch(Exception e){
+            ApiResponse<String> apiResponse= new ApiResponse<>("Products cannot be deleted, something went wrong.\n"+e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiResponse);
+        }
     }
 }
