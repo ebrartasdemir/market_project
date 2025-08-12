@@ -40,6 +40,14 @@ public class Product {
     public int getId() {
         return id;
     }
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Product(Category category, String name) {
+        this.category = category;
+        this.name = name;
+    }
 
     public String getName() {
         return name;

@@ -32,12 +32,13 @@ public class CategoryServiceImpl implements CategoryService {
     public CategoryResDto getCategoryById(int id) {
         Optional<Category> optionalCategory=categoryRepository.findById(id);
         Category category= optionalCategory.orElse(null);
+        System.out.println("a"+categoryMapper.categoryToCategoryResDto(category));
         return categoryMapper.categoryToCategoryResDto(category);
     }
 
     @Override
     public void createCategory(Category category) {
-        categoryRepository.save(category);
+        if(category.getName()!=null ){categoryRepository.save(category);}
     }
 
     @Override
@@ -68,9 +69,9 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public void deleteCategory(int id) {
-        categoryRepository.deleteById(id);
-
-    }
+        if(categoryRepository.existsById(id))
+            categoryRepository.deleteById(id);
+        }
     private Category apply( Category category,Map<String,Object> partialPayload){
         ObjectNode categoryNode=objectMapper.convertValue(category , ObjectNode.class);
         ObjectNode bodyObjectNode=objectMapper.convertValue(partialPayload , ObjectNode.class);

@@ -28,11 +28,16 @@ public class Category {
     public Category(String name, String description) {
         this.name = name;
         this.description = description;
-
+    }
+    public Category(String name) {
+        this.name = name;
     }
 
     public int getId() {
         return id;
+    }
+    public  void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {

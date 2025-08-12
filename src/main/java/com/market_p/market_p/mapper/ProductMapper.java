@@ -23,7 +23,7 @@ public class ProductMapper {
         productResDto.setCategoryName(product.getCategory().getName());
         return productResDto;
     }
-    public List<ProductResDto> productToProductResDtoList(List<Product> products){
+    public List<ProductResDto> productListToProductResDtoList(List<Product> products){
         List<ProductResDto> productResDtoList =new ArrayList<>();
         products.forEach(product -> productResDtoList.add(productToProductResDto(product)));
         return productResDtoList;

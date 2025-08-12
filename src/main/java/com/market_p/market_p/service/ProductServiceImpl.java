@@ -18,17 +18,20 @@ public class ProductServiceImpl implements ProductService {
     private ProductRepository productRepository;
     @Autowired
     private ProductMapper productMapper;
+    @Autowired
+    private CategoryRepository categoryRepository;
+
     @Override
     public List<ProductResDto> getAllProducts() {
           List<Product> productList= productRepository.findAll();
-          List<ProductResDto> productResDtoList =productMapper.productToProductResDtoList(productList);
+          List<ProductResDto> productResDtoList =productMapper.productListToProductResDtoList(productList);
           return productResDtoList;
     }
 
     @Override
     public List<ProductResDto> getProductsByCategoryId(int categoryId) {
         List<Product> productList=  productRepository.findByCategoryId(categoryId);
-        List<ProductResDto> productResDtoList =productMapper.productToProductResDtoList(productList);
+        List<ProductResDto> productResDtoList =productMapper.productListToProductResDtoList(productList);
         return productResDtoList;
 
     }
@@ -44,28 +47,30 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<ProductResDto> getProductByName(String name) {
         List<Product> productList=productRepository.findByName(name);
-        List<ProductResDto> productResDtoList =productMapper.productToProductResDtoList(productList);
+        List<ProductResDto> productResDtoList =productMapper.productListToProductResDtoList(productList);
         return productResDtoList;
     }
 
     @Override
     public void createProduct(ProductReqDto newProduct) {
+        if(newProduct==null||newProduct.getName()==null || newProduct.getName().equals(""))return;
+        if(newProduct.getCategoryId()==0) return;
         Product product=productMapper.productReqDtoToProduct(newProduct);
-        productRepository.save(product);
+        if(product.getCategory()!=null){productRepository.save(product);}
     }
 
     @Override
     public void updateProduct(int id, ProductReqDto productReqDto) {
         Optional<Product> optProduct= productRepository.findById(id);
-        Product newProduct=productMapper.productReqDtoToProduct(productReqDto);
-        String newName=newProduct.getName();
-        String newDescription=newProduct.getDescription();
-        int newQuantity=newProduct.getQuantity();
-        double newPrice=newProduct.getPrice();
-        Category category=newProduct.getCategory();
         if(optProduct.isPresent()) {
+            Product newProduct=productMapper.productReqDtoToProduct(productReqDto);
+            String newName=newProduct.getName();
+            String newDescription=newProduct.getDescription();
+            int newQuantity=newProduct.getQuantity();
+            double newPrice=newProduct.getPrice();
+            Category category=newProduct.getCategory();
             Product product = optProduct.get();
-            if (newName != null) product.setName(newName);
+            if (newName != null&& newName!="") product.setName(newName);
             if (newDescription != null) product.setDescription(newDescription);
             if (newQuantity >= 0) product.setQuantity(newQuantity);
             if (newPrice >= 0) product.setPrice(newPrice);
@@ -75,7 +80,8 @@ public class ProductServiceImpl implements ProductService {
     }
     @Override
     public void deleteProduct(int id) {
-        productRepository.deleteById(id);
+        if(productRepository.existsById(id))
+            productRepository.deleteById(id);
     }
 
 }
