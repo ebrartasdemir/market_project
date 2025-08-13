@@ -3,9 +3,9 @@ package com.market_p.market_p.controller;
 import com.market_p.market_p.dto.ApiResponse;
 import com.market_p.market_p.dto.ProductReqDto;
 import com.market_p.market_p.dto.ProductResDto;
-import com.market_p.market_p.entity.Product;
 import com.market_p.market_p.service.ProductService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +31,7 @@ public class ProductController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiResponse);        }
     }
     @GetMapping("/product/{id}")
-    public ResponseEntity<ApiResponse<ProductResDto>> getProduct(@PathVariable int id){
+    public ResponseEntity<ApiResponse<ProductResDto>> getProduct(@PathVariable @Min(1) int id){
         try{
             ProductResDto product= productService.getProductById(id);
             ApiResponse<ProductResDto> productApiResponse = new ApiResponse<>("Product with id: "+id+" found successfully.",product);
@@ -43,7 +43,7 @@ public class ProductController {
         }
     }
     @GetMapping("/products/category/{categoryId}")
-    public ResponseEntity<ApiResponse<List<ProductResDto>>> getProductByCategoryId(@PathVariable int categoryId){
+    public ResponseEntity<ApiResponse<List<ProductResDto>>> getProductByCategoryId(@PathVariable @Min(1) int categoryId){
         try{
             List<ProductResDto> productList=productService.getProductsByCategoryId(categoryId);
             ApiResponse<List<ProductResDto>> productApiResponse = new ApiResponse<>("All products listed successfully.",productList);
@@ -79,7 +79,7 @@ public class ProductController {
         }
     }
     @PutMapping("/product/{id}")
-    public ResponseEntity<ApiResponse<String>> updateProduct(@PathVariable int id,@Valid @RequestBody ProductReqDto product){
+    public ResponseEntity<ApiResponse<String>> updateProduct(@PathVariable @Min(1) int id,@Valid @RequestBody ProductReqDto product){
         try{
             productService.updateProduct(id, product);
             ApiResponse<String> productApiResponse = new ApiResponse<>("Product updated successfully.");
@@ -91,11 +91,11 @@ public class ProductController {
         }
     }
     @DeleteMapping("/product/{id}")
-    public ResponseEntity<ApiResponse<String>> deleteProduct(@PathVariable int id){
+    public ResponseEntity<ApiResponse<String>> deleteProduct(@PathVariable @Min(1) int id){
         try{
             productService.deleteProduct(id);
             ApiResponse<String> productApiResponse = new ApiResponse<>("Product deleted successfully.");
-            return ResponseEntity.ok(productApiResponse);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }
         catch(Exception e){
             ApiResponse<String> apiResponse= new ApiResponse<>("Products cannot be deleted, something went wrong.\n"+e.getMessage());

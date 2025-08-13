@@ -1,22 +1,18 @@
 package com.market_p.market_p.service;
 
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.market_p.market_p.dto.CategoryResDto;
 import com.market_p.market_p.entity.Category;
 import com.market_p.market_p.mapper.CategoryMapper;
 import com.market_p.market_p.repository.CategoryRepository;
-import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
+
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,13 +24,10 @@ public class CategoryServiceTest {
     @Mock
     private CategoryMapper categoryMapper;
     @Mock
-    private ObjectMapper objectMapper;
-    @Mock
     private CategoryRepository categoryRepository;
     @InjectMocks
     private CategoryServiceImpl categoryService;
-    @Captor
-    private ArgumentCaptor<Category> categoryCaptor;
+
 
 
     Category category;

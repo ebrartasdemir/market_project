@@ -24,29 +24,30 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<CategoryResDto> getAllCategories() {
-        List<Category> categoryList= categoryRepository.findAll();
+        List<Category> categoryList = categoryRepository.findAll();
         return categoryMapper.categoryListToCategoryResDtoList(categoryList);
     }
 
     @Override
     public CategoryResDto getCategoryById(int id) {
-        Optional<Category> optionalCategory=categoryRepository.findById(id);
-        Category category= optionalCategory.orElse(null);
-        System.out.println("a"+categoryMapper.categoryToCategoryResDto(category));
+        Optional<Category> optionalCategory = categoryRepository.findById(id);
+        Category category = optionalCategory.orElse(null);
         return categoryMapper.categoryToCategoryResDto(category);
     }
 
     @Override
     public void createCategory(Category category) {
-        if(category.getName()!=null ){categoryRepository.save(category);}
+        if (category.getName() != null) {
+            categoryRepository.save(category);
+        }
     }
 
     @Override
     public void updateCategory(int id, Category newCategory) {
-        Optional<Category> optCategory= categoryRepository.findById(id);
-        if(optCategory.isPresent()) {
-            String newName=newCategory.getName();
-            String newDescription=newCategory.getDescription();
+        Optional<Category> optCategory = categoryRepository.findById(id);
+        if (optCategory.isPresent()) {
+            String newName = newCategory.getName();
+            String newDescription = newCategory.getDescription();
             Category category = optCategory.get();
             if (newName != null) category.setName(newName);
             if (newDescription != null) category.setDescription(newDescription);
@@ -56,22 +57,24 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public void updatePartialyCategory(int id, Map<String, Object> patchPayload) {
-        Optional<Category> optCategory= categoryRepository.findById(id);
-        if(optCategory.isEmpty()){
-             throw new RuntimeException("Category not found");
+        Optional<Category> optCategory = categoryRepository.findById(id);
+        if (optCategory.isEmpty()) {
+            throw new RuntimeException("Category not found");
         }
-        if(patchPayload.containsKey("id")){
+        if (patchPayload.containsKey("id")) {
             throw new RuntimeException("Category id cannot be updated");
         }
-        Category updatedCategory = apply(optCategory.get(),patchPayload);
+        Category updatedCategory = apply(optCategory.get(), patchPayload);
         categoryRepository.save(updatedCategory);
     }
 
     @Override
     public void deleteCategory(int id) {
-        if(categoryRepository.existsById(id))
+        if (categoryRepository.existsById(id))
             categoryRepository.deleteById(id);
-        }
+
+    }
+
     private Category apply( Category category,Map<String,Object> partialPayload){
         ObjectNode categoryNode=objectMapper.convertValue(category , ObjectNode.class);
         ObjectNode bodyObjectNode=objectMapper.convertValue(partialPayload , ObjectNode.class);

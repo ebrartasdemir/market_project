@@ -5,6 +5,7 @@ import com.market_p.market_p.dto.ProductResDto;
 import com.market_p.market_p.entity.Category;
 import com.market_p.market_p.entity.Product;
 import com.market_p.market_p.mapper.ProductMapper;
+import com.market_p.market_p.repository.CategoryRepository;
 import com.market_p.market_p.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

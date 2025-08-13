@@ -35,11 +35,13 @@ public class CategoryController {
         public ResponseEntity<ApiResponse<CategoryResDto>> getCategoryById(@PathVariable @Min(1) int  id) {
         try{
             CategoryResDto category=categoryService.getCategoryById(id);
-            ApiResponse<CategoryResDto> apiResponse = new ApiResponse<>("Category id: "+id+" found succesfully.",category);
+            String message="Category id: "+id+" found succesfully.";
+            if(category==null) message="Cannot find category with id: "+id;
+            ApiResponse<CategoryResDto> apiResponse = new ApiResponse<>(message,category);
             return ResponseEntity.ok(apiResponse);
         }
         catch(Exception e) {
-            ApiResponse<CategoryResDto> apiResponse= new ApiResponse<>("Category id: "+id+" cannot be found. Something went wrong.\n"+e.getMessage());
+            ApiResponse<CategoryResDto> apiResponse= new ApiResponse<>("Category cannot be found. Something went wrong.\n"+e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiResponse);
         }
     }
@@ -68,16 +70,16 @@ public class CategoryController {
         }
     }
     //depends on unit test
-    @PatchMapping("/category/{id}")
-    public ResponseEntity<String> updatePartialyCategory(@Valid @PathVariable @Min(1) int id, @RequestBody Map<String,Object> patchPayload){
-        try{
-            categoryService.updatePartialyCategory(id,patchPayload);
-            return  ResponseEntity.ok("Category updated successfully");
-        }
-        catch(Exception e) {
-            return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Category cannot be updated. Something went wrong.\n"+e.getMessage());
-        }
-    }
+//    @PatchMapping("/category/{id}")
+//    public ResponseEntity<String> updatePartialyCategory(@Valid @PathVariable @Min(1) int id, @RequestBody Map<String,Object> patchPayload){
+//        try{
+//            categoryService.updatePartialyCategory(id,patchPayload);
+//            return  ResponseEntity.ok("Category updated successfully");
+//        }
+//        catch(Exception e) {
+//            return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Category cannot be updated. Something went wrong.\n"+e.getMessage());
+//        }
+//    }
     @DeleteMapping("/category/{id}")
     //Cannot delete or update a parent row: a foreign key constraint fails
     public ResponseEntity<String> deleteCategory(@PathVariable @Min(1) int id){
