@@ -1,0 +1,43 @@
+package com.market_p.market_p.example.constants;
+
+public class Messages {
+
+    //_____________________________________________________API_____________________________________________________//
+    //CATEGORIES
+    public static class Category {
+        public static final String RECORDS_FOUND_AND_LISTED = "All category records listed successfully.";
+        public static final String RECORD_NOT_FOUND_AND_LISTED_ERROR = "Category records cannot be listed, something went wrong.";
+        public static final String RECORD_FOUND = "Category record found successfully. id: %d.";
+        public static final String RECORD_NOT_FOUND = "Category record not found. id: %d.";
+        public static final String RECORD_NOT_FOUND_ERROR = "Category record cannot be found. Something went wrong.";
+        public static final String RECORD_CREATED = "Category record created successfully.";
+        public static final String RECORD_CREATED_ERROR = "Category record cannot be created. Something went wrong.";
+        public static final String RECORD_UPDATED = "Category record updated successfully. id: %d.";
+        public static final String RECORD_UPDATED_ERROR = "Category cannot be updated. Something went wrong.";
+        public static final String RECORD_DELETED_ERROR = "Category cannot be deleted. Something went wrong.";
+        public static final String INVALID_BLANK_NAME ="Category name cannot be empty.";
+    }
+    //PRODUCTS
+    public static class Product {
+        public static final String RECORDS_FOUND_AND_LISTED = "Product records listed successfully.";
+        public static final String RECORD_NOT_FOUND_AND_LISTED_ERROR = "Product records cannot be listed, something went wrong.";
+        public static final String RECORD_FOUND = "Product found successfully. id: %d.";
+        public static final String RECORD_NOT_FOUND = "Products cannot be found. id: %d";
+        public static final String RECORD_NOT_FOUND_ERROR = "Products cannot be listed. Something went wrong.";
+        public static final String RECORDS_FOUND_AND_LISTED_WITH_CATEGORY = "Products belongs to category listed successfully. Category id: %d.";
+        public static final String RECORDS_FOUND_AND_LISTED_WITH_NAME = "Products belongs with this name listed successfully. Name: %s.";
+        public static final String RECORD_CREATED = "Product record created successfully.";
+        public static final String RECORD_CREATED_ERROR = "Product record cannot be created. Something went wrong.";
+        public static final String RECORD_UPDATED = "Product record updated successfully. id: %d.";
+        public static final String RECORD_UPDATED_ERROR = "Product record cannot be updated. Something went wrong.";
+        public static final String RECORD_DELETED_ERROR = "Product record cannot be deleted successfully. id: %d.";
+        public static final String INVALID_BLANK_NAME ="Product name cannot be empty.";
+        public static final String INVALID_MAX_CHARACTERS_LENGTH_NAME="Product name cannot be longer than 25 characters.";
+        public static final String INVALID_MAX_CHARACTERS_LENGTH_DESCRIPTION="Product description cannot be longer than 1000 characters";
+        public static final String INVALID_PRICE_CANT_BE_NEGATIVE="Product price cannot be negative.";
+        public static final String INVALID_QUANTITY_CANT_BE_NEGATIVE="Product quantity cannot be negative.";
+
+    }
+    //_____________________________________________________SERVICE_____________________________________________________//
+    //CA
+}

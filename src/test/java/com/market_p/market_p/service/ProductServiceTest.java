@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -232,8 +233,10 @@ public class ProductServiceTest {
     }
     @Test
     void testDeleteProduct_whenProductNotFound( ) {
-        when(productRepository.existsById(1)).thenReturn(false);
-        productService.deleteProduct(1);
-        verify(productRepository,never()).deleteById(1);
+        when(productRepository.existsById(3)).thenReturn(false);
+        assertThatThrownBy(() -> productService.deleteProduct(3))
+                .isInstanceOf(RuntimeException.class)
+                .hasMessage("Product not found");
+        verify(productRepository,never()).deleteById(3);
     }
 }

@@ -5,6 +5,7 @@ import com.market_p.market_p.controller.CategoryController;
 import com.market_p.market_p.dto.ApiResponse;
 import com.market_p.market_p.dto.CategoryResDto;
 import com.market_p.market_p.entity.Category;
+import com.market_p.market_p.example.constants.Messages;
 import com.market_p.market_p.service.CategoryServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -42,6 +43,7 @@ public class CategoryControllerTest {
     @BeforeEach
     void setUp() {
         category = new Category("Elektronik","Teknolojik Ürünler");
+        category.setId(1);
         categoryResDto = new CategoryResDto("Elektronik","Teknolojik Ürünler");
     }
 
@@ -53,7 +55,7 @@ public class CategoryControllerTest {
         when(categoryService.getAllCategories()).thenReturn(categoryResDtoList);
         mockMvc.perform(get("/api/categories").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").value("All categories listed successfully."))
+                .andExpect(jsonPath("$.message").value(Messages.Category.RECORDS_FOUND_AND_LISTED))
                 .andExpect(jsonPath("$.data.length()").value(2))
                 .andExpect(jsonPath("$.data[0].name").value(categoryResDto2.getName()))
                 .andExpect(jsonPath("$.data[1].name").value(categoryResDto.getName()));
@@ -65,7 +67,7 @@ public class CategoryControllerTest {
         when(categoryService.getAllCategories()).thenReturn(categoryResDtoList);
         mockMvc.perform(get("/api/categories").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").value("All categories listed successfully."))
+                .andExpect(jsonPath("$.message").value(Messages.Category.RECORDS_FOUND_AND_LISTED))
                 .andExpect(jsonPath("$.data.length()").value(0));
     }
     @Test
@@ -73,22 +75,22 @@ public class CategoryControllerTest {
         when(categoryService.getAllCategories()).thenThrow(new RuntimeException());
         mockMvc.perform(get("/api/categories"))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message", containsString("Categories cannot be listed")));
+                .andExpect(jsonPath("$.message", containsString(Messages.Category.RECORD_NOT_FOUND_AND_LISTED_ERROR)));
     }
     @Test
     void testGetCategoryById_shouldReturnCategory() throws Exception {
         when(categoryService.getCategoryById(1)).thenReturn(categoryResDto);
         mockMvc.perform(get("/api/category/{id}",1).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").value("Category id: "+1+" found succesfully."))
+                .andExpect(jsonPath("$.message").value(String.format(Messages.Category.RECORD_FOUND,1)))
                 .andExpect(jsonPath("$.data.name").value(categoryResDto.getName()));
     }
     @Test
     void testGetCategoryById_whenNotFound_shouldReturnNull() throws Exception {
-        when(categoryService.getCategoryById(1)).thenReturn(categoryResDto);
-        mockMvc.perform(get("/api/category/{id}",1).accept(MediaType.APPLICATION_JSON))
+        when(categoryService.getCategoryById(555)).thenReturn(null);
+        mockMvc.perform(get("/api/category/{id}",555).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").value("Category id: "+1+" found succesfully."))
+                .andExpect(jsonPath("$.message").value(String.format(Messages.Category.RECORD_NOT_FOUND,555)))
                 .andExpect(jsonPath("$.data").value(nullValue()));
     }
 
@@ -112,16 +114,16 @@ public class CategoryControllerTest {
         mockMvc.perform(post("/api/category").contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(category)))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.message").value("Category created successfully"));
+                .andExpect(jsonPath("$.message").value(Messages.Category.RECORD_CREATED));
 
     }
     @Test
     void testCreateCategory_serviceThrows_returns400() throws Exception {
-        doThrow(new RuntimeException("Creation failed")).when(categoryService).createCategory(any(Category.class));;
+        doThrow(new RuntimeException("")).when(categoryService).createCategory(any(Category.class));;
         mockMvc.perform(post("/api/category").contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(category)))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message").value("Category cannot be created."))
+                .andExpect(jsonPath("$.message").value(Messages.Category.RECORD_CREATED_ERROR))
                 .andExpect(jsonPath("$.data").value(nullValue()));
     }
     @Test
@@ -146,7 +148,7 @@ public class CategoryControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(category)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").value("Category updated successfully"));
+                .andExpect(jsonPath("$.message").value(String.format(Messages.Category.RECORD_UPDATED,1)));
     }
     //@Test
 //    void testUpdateCategory_whenNotFound_shouldThrow400() throws Exception {

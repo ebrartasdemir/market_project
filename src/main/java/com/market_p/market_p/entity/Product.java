@@ -2,6 +2,7 @@ package com.market_p.market_p.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.market_p.market_p.example.constants.Messages;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -14,15 +15,15 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @NotBlank(message="Product name cannot be empty")
-    @Size(max = 25,message = "Product name cannot be longer than 25 characters.")
+    @NotBlank(message= Messages.Product.INVALID_BLANK_NAME)
+    @Size(max = 25,message = Messages.Product.INVALID_MAX_CHARACTERS_LENGTH_NAME)
     private String name;
     @Lob
-    @Size(max=1000,message = "Product description cannot be longer than 1000 characters")
+    @Size(max=1000,message =Messages.Product.INVALID_MAX_CHARACTERS_LENGTH_DESCRIPTION )
     private String description;
-    @Min(0)
+    @Min(value = 0,message = Messages.Product.INVALID_PRICE_CANT_BE_NEGATIVE)
     private double price;//?
-    @Min(0)
+    @Min(value = 0,message =  Messages.Product.INVALID_QUANTITY_CANT_BE_NEGATIVE)
     private int quantity;//?
     @ManyToOne
     @JoinColumn(name="category_id")
@@ -43,7 +44,6 @@ public class Product {
     public void setId(int id) {
         this.id = id;
     }
-
     public Product(Category category, String name) {
         this.category = category;
         this.name = name;

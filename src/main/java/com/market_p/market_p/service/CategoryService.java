@@ -11,6 +11,6 @@ public interface CategoryService {
     CategoryResDto getCategoryById(int id);
     void createCategory(Category category);
     void updateCategory(int id,Category category);
-    void updatePartialyCategory(int id, Map<String, Object> patchPayload);
     void deleteCategory(int id);
+    //void updatePartialyCategory(int id, Map<String, Object> patchPayload);
 }

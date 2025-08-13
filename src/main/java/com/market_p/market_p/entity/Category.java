@@ -1,6 +1,7 @@
 package com.market_p.market_p.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.market_p.market_p.example.constants.Messages;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -13,7 +14,7 @@ public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @NotBlank(message = "Category name cannot be empty")
+    @NotBlank(message = Messages.Category.INVALID_BLANK_NAME)
     @Size(max = 25,message = "Category name cannot be longer than 25 characters.")
     private String name;
     private String description;

@@ -3,31 +3,40 @@ package com.market_p.market_p.controller;
 import com.market_p.market_p.dto.ApiResponse;
 import com.market_p.market_p.dto.CategoryResDto;
 import com.market_p.market_p.entity.Category;
+import com.market_p.market_p.example.constants.Messages;
 import com.market_p.market_p.service.CategoryService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
+import org.slf4j.Logger;
 
 @RestController
 @RequestMapping("/api")
 public class CategoryController {
+    private static final Logger logger = LoggerFactory.getLogger(CategoryController.class);
+
     @Autowired
     private CategoryService categoryService;
+    @Autowired
+    private HttpMessageConverters messageConverters;
+
     @GetMapping("/categories")
     public ResponseEntity<ApiResponse<List<CategoryResDto>>> getAllCategories() {
         try{
             List<CategoryResDto>categoryList=categoryService.getAllCategories();
-            ApiResponse<List<CategoryResDto>> apiResponse = new ApiResponse<>("All categories listed successfully.",categoryList);
+            ApiResponse<List<CategoryResDto>> apiResponse = new ApiResponse<>(Messages.Category.RECORDS_FOUND_AND_LISTED,categoryList);
+
             return ResponseEntity.ok(apiResponse);
         }
         catch(Exception e) {
-            ApiResponse<List<CategoryResDto>> apiResponse= new ApiResponse<>("Categories cannot be listed, something went wrong.\n"+e.getMessage());
+            ApiResponse<List<CategoryResDto>> apiResponse= new ApiResponse<>(Messages.Category.RECORD_NOT_FOUND_AND_LISTED_ERROR +e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiResponse);
         }
     }
@@ -35,13 +44,13 @@ public class CategoryController {
         public ResponseEntity<ApiResponse<CategoryResDto>> getCategoryById(@PathVariable @Min(1) int  id) {
         try{
             CategoryResDto category=categoryService.getCategoryById(id);
-            String message="Category id: "+id+" found succesfully.";
-            if(category==null) message="Cannot find category with id: "+id;
+            String message=String.format(Messages.Category.RECORD_FOUND, id);
+            if(category==null) message=String.format(Messages.Category.RECORD_NOT_FOUND, id);
             ApiResponse<CategoryResDto> apiResponse = new ApiResponse<>(message,category);
             return ResponseEntity.ok(apiResponse);
         }
         catch(Exception e) {
-            ApiResponse<CategoryResDto> apiResponse= new ApiResponse<>("Category cannot be found. Something went wrong.\n"+e.getMessage());
+            ApiResponse<CategoryResDto> apiResponse= new ApiResponse<>(String.format(Messages.Category.RECORD_NOT_FOUND_ERROR, id)+e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiResponse);
         }
     }
@@ -49,11 +58,11 @@ public class CategoryController {
     public ResponseEntity<ApiResponse<String>> addCategory(@Valid @RequestBody Category category){
         try{
         categoryService.createCategory(category);
-            ApiResponse<String> apiResponse = new ApiResponse<>("Category created successfully");
+            ApiResponse<String> apiResponse = new ApiResponse<>(Messages.Category.RECORD_CREATED);
             return  ResponseEntity.status(HttpStatus.CREATED).body(apiResponse);
         }
         catch(Exception e) {
-            ApiResponse<String> apiResponse = new ApiResponse<>("Category cannot be created.");
+            ApiResponse<String> apiResponse = new ApiResponse<>(Messages.Category.RECORD_CREATED_ERROR +e.getMessage());
             return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiResponse);
         }
     }
@@ -61,11 +70,13 @@ public class CategoryController {
     public ResponseEntity<ApiResponse<String>> updateCategory(@Valid @PathVariable @Min(1) int id, @RequestBody Category category){
         try{
             categoryService.updateCategory(id,category);
-            ApiResponse<String> apiResponse = new ApiResponse<>("Category updated successfully");
+            String message=String.format(Messages.Category.RECORD_UPDATED,id);
+            if(category==null) message=String.format(Messages.Category.RECORD_NOT_FOUND,id);
+            ApiResponse<String> apiResponse = new ApiResponse<>(message);
             return  ResponseEntity.ok(apiResponse);
         }
         catch(Exception e) {
-            ApiResponse<String> apiResponse = new ApiResponse<>("Category cannot be updated. Something went wrong.\n"+e.getMessage());
+            ApiResponse<String> apiResponse = new ApiResponse<>(Messages.Category.RECORD_UPDATED_ERROR +e.getMessage());
             return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiResponse);
         }
     }
@@ -88,7 +99,7 @@ public class CategoryController {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }
         catch(Exception e) {
-            return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Category cannot be deleted. Something went wrong.\n"+e.getMessage());
+            return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Messages.Category.RECORD_DELETED_ERROR +e.getMessage());
         }
     }
 }

@@ -4,6 +4,7 @@ import com.market_p.market_p.dto.ProductReqDto;
 import com.market_p.market_p.dto.ProductResDto;
 import com.market_p.market_p.entity.Category;
 import com.market_p.market_p.entity.Product;
+import com.market_p.market_p.example.constants.Messages;
 import com.market_p.market_p.mapper.ProductMapper;
 import com.market_p.market_p.repository.CategoryRepository;
 import com.market_p.market_p.repository.ProductRepository;
@@ -78,11 +79,13 @@ public class ProductServiceImpl implements ProductService {
             if(category != null) product.setCategory(category);
             productRepository.save(product);
         }
+        else throw new RuntimeException(String.format(Messages.Product.RECORD_NOT_FOUND,id));
     }
     @Override
     public void deleteProduct(int id) {
         if(productRepository.existsById(id))
             productRepository.deleteById(id);
+        else throw new RuntimeException(String.format(Messages.Product.RECORD_NOT_FOUND,id));
     }
 
 }
