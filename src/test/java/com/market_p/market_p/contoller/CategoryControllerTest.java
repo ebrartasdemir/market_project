@@ -93,15 +93,6 @@ public class CategoryControllerTest {
                 .andExpect(jsonPath("$.message").value(String.format(Messages.Category.RECORD_NOT_FOUND,555)))
                 .andExpect(jsonPath("$.data").value(nullValue()));
     }
-
-//    @Test
-//    void testGetCategoryById_serviceThrows_returns400() throws Exception {
-//        String id="dfsgsd";
-//        when(categoryService.getCategoryById(id)).thenThrow(new RuntimeException());
-//        mockMvc.perform(get("/api/category/{id}",567).accept(MediaType.APPLICATION_JSON))
-//                .andExpect(status().isBadRequest())
-//                .andExpect(jsonPath("$.message", containsString("Category cannot be found. Something went wrong.")));
-//    }
     @Test
     void testGetCategoryById_invalidPathVariable() throws Exception {
         mockMvc.perform(get("/api/category/{id}", 0))
@@ -150,24 +141,25 @@ public class CategoryControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value(String.format(Messages.Category.RECORD_UPDATED,1)));
     }
-    //@Test
-//    void testUpdateCategory_whenNotFound_shouldThrow400() throws Exception {
-//        mockMvc.perform(put("/api/category/{id}", 231324)
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(objectMapper.writeValueAsString(category)))
-//                .andExpect(status().isBadRequest());
-//        verifyNoInteractions(categoryService);
-//    }
-//
-//    @Test
-//    void testUpdateCategory_whenBodyEmpty_shouldThrow400() throws Exception {
-//        Category category2 = new Category();
-//        mockMvc.perform(put("/api/category/{id}", 1)
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(objectMapper.writeValueAsString(category2)))
-//                .andExpect(status().isBadRequest());
-//        verifyNoInteractions(categoryService);
-//    }
+    @Test
+    void testUpdateCategory_whenNotFound_shouldThrow400() throws Exception {
+        Category bodyCategory=new Category("Hazır Gıda","Konserve, Hazır, Paketlenmiş Yemek ürünleri.");
+        doThrow(new RuntimeException(String.format(Messages.Category.RECORD_NOT_FOUND,231324))).when(categoryService).updateCategory(eq(231324),any(Category.class));
+        mockMvc.perform(put("/api/category/{id}", 231324)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(bodyCategory)))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void testUpdateCategory_whenBodyEmpty_shouldThrow400() throws Exception {
+        Category category2 = new Category();
+        doThrow(new RuntimeException(Messages.EMPTY_BODY)).when(categoryService).updateCategory(anyInt(),refEq(category2));
+        mockMvc.perform(put("/api/category/{id}", 1)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(category2)))
+                .andExpect(status().isBadRequest());
+    }
     @Test
     void testUpdateCategory_invalidId() throws Exception {
         mockMvc.perform(put("/api/category/{id}",0))
@@ -187,10 +179,10 @@ public class CategoryControllerTest {
                 .andExpect(status().isBadRequest());
         verify(categoryService,never()).deleteCategory(1);
     }
-//    @Test
-//    void testDeleteCategory_whenCategoryNotFound() throws Exception {
-//        mockMvc.perform(delete("/api/category/{id}",2))
-//                .andExpect(status().isBadRequest());
-//        verify(categoryService,never()).deleteCategory(2);
-//    }
+    @Test
+    void testDeleteCategory_whenCategoryNotFound() throws Exception {
+        doThrow(new RuntimeException(String.format(Messages.Category.RECORD_NOT_FOUND,2))).when(categoryService).deleteCategory(2);
+        mockMvc.perform(delete("/api/category/{id}",2))
+                .andExpect(status().isBadRequest());
+    }
 }

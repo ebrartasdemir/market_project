@@ -6,6 +6,7 @@ import com.market_p.market_p.dto.ProductReqDto;
 import com.market_p.market_p.dto.ProductResDto;
 import com.market_p.market_p.entity.Category;
 import com.market_p.market_p.entity.Product;
+import com.market_p.market_p.example.constants.Messages;
 import com.market_p.market_p.mapper.ProductMapper;
 import com.market_p.market_p.repository.ProductRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -185,16 +186,27 @@ public class ProductServiceTest {
         verify(productRepository).save(product);
     }
     @Test
-    void testUpdateProduct_whenProductNotFound_shouldProductBeEmpty( ) {
+    void testUpdateProduct_whenProductNotFound_shouldThrowRuntimeException( ) {
         ProductReqDto productReqDto=new ProductReqDto(1,5,5.5,"Intel...","Hp Laptop");
-        when(productRepository.findById(2)).thenReturn(Optional.empty());
-        productService.updateProduct(2,productReqDto);
+        assertThatThrownBy(() -> productService.updateProduct(222,productReqDto))
+                .isInstanceOf(RuntimeException.class)
+                .hasMessage(String.format(Messages.Product.RECORD_NOT_FOUND,222));
+        verify(productRepository,never()).save(any());
+        verify(productMapper,never()).productListToProductResDtoList(any());
+    }
+    @Test
+    void testUpdateProduct_whenProductBodyIsEmpty_shouldThrowRuntimeException( ) {
+        ProductReqDto productReqDto=new ProductReqDto();
+        when(productRepository.findById(1)).thenReturn(Optional.of(product));
+        assertThatThrownBy(() -> productService.updateProduct(1,productReqDto))
+                .isInstanceOf(RuntimeException.class)
+                .hasMessage(String.format(Messages.EMPTY_BODY));
         verify(productRepository,never()).save(any());
         verify(productMapper,never()).productListToProductResDtoList(any());
     }
 
     @Test
-    void testUpdateProduct_whenBodyNotFull( ) {
+    void testUpdateProduct_whenBodyNotFull_shouldUpdateProduct( ) {
         Product bodyProduct=new Product();
         bodyProduct.setQuantity(10);
         bodyProduct.setPrice(1000);
@@ -212,7 +224,7 @@ public class ProductServiceTest {
         verify(productRepository).save(product);
     }
     @Test
-    void testUpdateProduct_whenBodyOnlyHasOneField( ) {
+    void testUpdateProduct_whenBodyOnlyHasOneField_shouldUpdateProduct( ) {
         Category category2=new Category("Product","Temizleyci, canlandırıcılar");
         category2.setId(2);
         Product bodyProduct=new Product();

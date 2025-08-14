@@ -2,13 +2,18 @@ package com.market_p.market_p.service;
 
 
 import com.market_p.market_p.dto.CategoryResDto;
+import com.market_p.market_p.dto.ProductReqDto;
 import com.market_p.market_p.entity.Category;
+import com.market_p.market_p.entity.Product;
+import com.market_p.market_p.example.constants.Messages;
 import com.market_p.market_p.mapper.CategoryMapper;
 import com.market_p.market_p.repository.CategoryRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -17,6 +22,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -27,6 +33,8 @@ public class CategoryServiceTest {
     private CategoryRepository categoryRepository;
     @InjectMocks
     private CategoryServiceImpl categoryService;
+    @Captor
+    private ArgumentCaptor<Category> categoryCaptor;
 
 
 
@@ -81,6 +89,13 @@ public class CategoryServiceTest {
         assertThat(result).isNull();
     }
     @Test
+    void testCreateCategory_shouldCreateCategory( ) {
+        categoryService.createCategory(category);
+        verify(categoryRepository,times(1)).save(categoryCaptor.capture());
+        Category category1=categoryCaptor.getValue();
+        assertThat(category1.getId()).isEqualTo(category.getId());
+    }
+    @Test
     void testCreateCategory_whenFielsAreNull_shouldReturnNull( ) {
         Category category1=new Category();
         categoryService.createCategory(category1);
@@ -96,17 +111,20 @@ public class CategoryServiceTest {
         verify(categoryRepository).save(category);
     }
     @Test
-    void testUpdateCategory_whenBodyIsEmpty_shouldReturnNull ( ) {
+    void testUpdateCategory_whenBodyIsEmpty_shouldReturnRuntimeException( ) {
         Category bodyCategory=new Category();
         when(categoryRepository.findById(1)).thenReturn(Optional.of(category));
-        categoryService.updateCategory(1,bodyCategory);
+        assertThatThrownBy(() -> categoryService.updateCategory(1,bodyCategory))
+                .isInstanceOf(RuntimeException.class)
+                .hasMessage(Messages.EMPTY_BODY);
         verify(categoryRepository,never()).save(any());
     }
     @Test
-    void testUpdateCategory_whenCategoryNotFound_shouldReturnNull ( ) {
+    void testUpdateCategory_whenCategoryNotFound_shouldReturnRuntimeException ( ) {
         Category bodyCategory=new Category("İçecek","Soğuk Sıcak İçecekler");
-        when(categoryRepository.findById(1)).thenReturn(Optional.empty());
-        categoryService.updateCategory(1,bodyCategory);
+        assertThatThrownBy(() -> categoryService.updateCategory(2,bodyCategory))
+                .isInstanceOf(RuntimeException.class)
+                .hasMessage(String.format(Messages.Category.RECORD_NOT_FOUND,2));
         verify(categoryRepository,never()).save(any());
     }
     @Test
@@ -118,7 +136,9 @@ public class CategoryServiceTest {
     @Test
     void testDeleteCategory_whenEmpty_shouldReturnNull( ) {
         when(categoryRepository.existsById(2)).thenReturn(false);
-        categoryService.deleteCategory(2);
+        assertThatThrownBy(() -> categoryService.deleteCategory(2))
+                .isInstanceOf(RuntimeException.class)
+                .hasMessage(String.format(Messages.Category.RECORD_NOT_FOUND,2));
         verify(categoryRepository,never()).deleteById(anyInt());
     }
 }

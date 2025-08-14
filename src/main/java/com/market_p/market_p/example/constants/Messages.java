@@ -1,7 +1,7 @@
 package com.market_p.market_p.example.constants;
 
 public class Messages {
-
+    public static final String EMPTY_BODY="Body is empty!";
     //_____________________________________________________API_____________________________________________________//
     //CATEGORIES
     public static class Category {
