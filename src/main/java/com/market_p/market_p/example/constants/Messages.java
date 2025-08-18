@@ -38,6 +38,19 @@ public class Messages {
         public static final String INVALID_QUANTITY_CANT_BE_NEGATIVE="Product quantity cannot be negative.";
 
     }
-    //_____________________________________________________SERVICE_____________________________________________________//
-    //CA
+    //USER
+    public static class User{
+        public static final String RECORD_NOT_FOUND_BY_EMAIL = "User not found by email: %s.";
+        public static final String ALREADY_REGISTERED_EMAIL = "This email: %s already exists.";
+        public static final String RECORD_CREATED_SUCCESSFULLY = "User created successfully.";
+    }
+    //ROLE
+    public static class Role{
+        public static final String RECORD_NOT_FOUND_BY_TITLE = "Role not found by title: %s.";
+    }
+    //AUTH
+    public static class Auth{
+        public static final String INVALID_TOKEN="Token has been expaired or uncorrect.";
+        public static final String VALID_TOKEN="Token is valid.";
+    }
 }

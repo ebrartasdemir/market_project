@@ -1,5 +1,6 @@
 package com.market_p.market_p.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -10,13 +11,14 @@ public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String name;
+    private String title;
     private String description;
     @OneToMany(mappedBy = "role")
+    @JsonManagedReference("role-user")
     private List<User> users;
 
-    public Role(String name, String description, List<User> users) {
-        this.name = name;
+    public Role(String title, String description, List<User> users) {
+        this.title = title;
         this.description = description;
         this.users = users;
     }
@@ -39,12 +41,12 @@ public class Role {
         this.description = description;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public int getId() {

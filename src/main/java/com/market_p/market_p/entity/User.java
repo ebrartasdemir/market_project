@@ -1,45 +1,76 @@
 package com.market_p.market_p.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Collection;
+import java.util.List;
 
 @Table(name="User")
 @Entity
-public class User {
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String username;
     private String name;
+    private String surname;
     private String password;
     private String email;
     private String phone;
-    private String address;
+    private List<String> addresses;
     @ManyToOne
     @JoinColumn(name = "role_id")
+    @JsonBackReference("role-user")
     private Role role;
 
-    public User(String username, String name, String password, String email, String phone, String address, Role role) {
-        this.username = username;
+    public User(String name,String surname, String password, String email, String phone, Role role) {
         this.name = name;
+        this.surname = surname;
         this.password = password;
         this.email = email;
         this.phone = phone;
-        this.address = address;
         this.role = role;
     }
     public User() {}
 
+    public String getSurname() {
+        return surname;
+    }
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
     public int getId() {
         return id;
     }
-
+    @Override
     public String getUsername() {
-        return username;
+        return email;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
     }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return UserDetails.super.isEnabled();
+    }
+
 
     public String getName() {
         return name;
@@ -49,21 +80,22 @@ public class User {
         this.name = name;
     }
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(role.getTitle()));
+    }
+    @Override
     public String getPassword() {
         return password;
+    }
+    public Role getRoles() {
+        return role;
     }
 
     public void setPassword(String password) {
         this.password = password;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
 
     public String getPhone() {
         return phone;
@@ -73,17 +105,15 @@ public class User {
         this.phone = phone;
     }
 
-    public String getAddress() {
-        return address;
+    public List<String> getAddresses() {
+        return addresses;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setAddresses(List<String> addresses) {
+        this.addresses = addresses;
     }
 
-    public Role getRole() {
-        return role;
-    }
+
 
     public void setRole(Role role) {
         this.role = role;
