@@ -18,6 +18,9 @@ import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import java.time.Clock;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Date;
 
 @Component
@@ -37,18 +40,27 @@ public class JWTGenerator {
 
     public String generateToken(Authentication authentication) {
         String authenticationName = authentication.getName();
-        Date currentDate = new Date();
-        Date expiryDate = new Date(currentDate.getTime() + tokenSecureMin * 60 * 1000);
-        String token = Jwts.builder().setSubject(authenticationName).setIssuedAt(currentDate).setExpiration(expiryDate).signWith(SignatureAlgorithm.HS256, key).compact();
-        return token;
+        Clock clock = Clock.systemUTC();
+        Instant now = Instant.now(clock);
+        Instant exp  = now.plus(Duration.ofMinutes(tokenSecureMin));
+        return Jwts.builder().setSubject(authenticationName)
+        .setIssuedAt(Date.from(now))
+                .setExpiration(Date.from(exp))
+        .signWith(key,SignatureAlgorithm.HS256)
+                .compact();
     }
     public String getUserFromToken(String token) {
-        Claims claims=Jwts.parser().setSigningKey(key).parseClaimsJws(token).getBody();
+        Claims claims=Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
         return claims.getSubject();
     }
     public boolean validateToken(String token) {
     try{
-        Jwts.parser().setSigningKey(key).parseClaimsJws(token);
+        //TODO:değiştir
+        //redis spring boot redis ile cahcleme
+        Jwts.parserBuilder().setSigningKey(key).
+                setAllowedClockSkewSeconds(60).
+                build().
+                parseClaimsJws(token);
         return true;
     }
     catch (Exception e) {

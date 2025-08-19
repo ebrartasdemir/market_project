@@ -28,9 +28,11 @@ public class SecurityConfig {
         http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.GET).permitAll()
-                        .requestMatchers("/login").permitAll()
                         .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers(HttpMethod.GET).permitAll()
                         .requestMatchers(HttpMethod.POST).hasAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.PUT).hasAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE).hasAuthority("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(ex -> ex

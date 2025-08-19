@@ -40,9 +40,21 @@ public class Messages {
     }
     //USER
     public static class User{
+        public static final String  NAME_CANT_BE_EMPTY = "Name cannot be empty.";
+        public static final String  NAME_MUST_OBEY_REGEX_RULES="Name can only contain alphabetic characters.";
+        public static final String  PASSWORD_CANT_BE_EMPTY = "Password cannot be empty.";
+        public static final String  PASSWORD_MUST_OBEY_REGEX_RULES="Password must be between 10-25 characters.";
+        public static final String  EMAIL_CANT_BE_EMPTY = "Email cannot be empty.";
+        public static final String  EMAIL_MUST_OBEY_REGEX_RULES="Email must be in a form like 'test@test.com'.";
+        public static final String  PHONE_CANT_BE_EMPTY = "Phone cannot be empty.";
+        public static final String  PHONE_MUST_OBEY_REGEX_RULES="Phone Number must contains only 10 digits.";
+        public static final String  SURNAME_CANT_BE_EMPTY = "Surname cannot be empty.";
+        public static final String  SURNAME_MUST_OBEY_REGEX_RULES="Surname can only contain alphabetic characters.";
         public static final String RECORD_NOT_FOUND_BY_EMAIL = "User not found by email: %s.";
         public static final String ALREADY_REGISTERED_EMAIL = "This email: %s already exists.";
         public static final String RECORD_CREATED_SUCCESSFULLY = "User created successfully.";
+        public static final String REGISTER_FAILED = "Cannot register user, something went wrong";
+        public static final String LOGIN_FAILED = "Cannot login user, something went wrong";
     }
     //ROLE
     public static class Role{
