@@ -47,14 +47,14 @@ public class AuthController {
         }
         String password = passwordEncoder.encode(registerDto.getPassword());
         Role role=roleRepository.findByTitle("USER").get();
-        User user = new User(registerDto.getFirstName(), registerDto.getLastName(),password, registerDto.getEmail(), registerDto.getPhoneNum(),role);
+        User user = new User(registerDto.getFirstName(), registerDto.getSurname(),password, registerDto.getEmail(), registerDto.getPhoneNum(),role);
         userRepository.save(user);
         ApiResponse apiResponse=new ApiResponse(Messages.User.RECORD_CREATED_SUCCESSFULLY);
         return ResponseEntity.status(HttpStatus.CREATED).body(apiResponse);
 
     }
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody LoginDto loginDto) {
+    public ResponseEntity<ApiResponse> login(@RequestBody LoginDto loginDto) {
         if(!userRepository.existsByEmail(loginDto.getEmail())) {
             ApiResponse apiResponse=new ApiResponse<>(String.format(Messages.User.RECORD_NOT_FOUND_BY_EMAIL,loginDto.getEmail()));
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiResponse);
@@ -64,6 +64,6 @@ public class AuthController {
         String token=jwtGenerator.generateToken(authentication);
         AuthResponse authResponse=new AuthResponse(token);
         ApiResponse<AuthResponse> apiResponse=new ApiResponse<AuthResponse>(Messages.Auth.VALID_TOKEN,authResponse);
-        return new ResponseEntity(apiResponse, HttpStatus.OK);
+        return new ResponseEntity<ApiResponse>(apiResponse, HttpStatus.OK);
     }
 }

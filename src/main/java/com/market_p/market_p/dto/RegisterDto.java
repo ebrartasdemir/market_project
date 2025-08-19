@@ -12,7 +12,7 @@ public class RegisterDto {
     @NotBlank
     private String firstName;
     @NotBlank
-    private String lastName;
+    private String surname;
     @NotBlank
     private String email;
     @NotBlank
