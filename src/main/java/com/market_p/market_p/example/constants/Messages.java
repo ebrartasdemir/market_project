@@ -19,9 +19,11 @@ public class Messages {
     }
     //PRODUCTS
     public static class Product {
+        public static final String CANT_BE_EMPTY = "Product can't be empty.";
         public static final String RECORDS_FOUND_AND_LISTED = "Product records listed successfully.";
         public static final String RECORD_NOT_FOUND_AND_LISTED_ERROR = "Product records cannot be listed, something went wrong.";
         public static final String RECORD_FOUND = "Product found successfully. id: %d.";
+        public static final String RECORD_OUT_OF_STOCK="Product out of stock";
         public static final String RECORD_NOT_FOUND = "Products cannot be found. id: %d";
         public static final String RECORD_NOT_FOUND_ERROR = "Products cannot be listed. Something went wrong.";
         public static final String RECORDS_FOUND_AND_LISTED_WITH_CATEGORY = "Products belongs to category listed successfully. Category id: %d.";
@@ -31,6 +33,7 @@ public class Messages {
         public static final String RECORD_UPDATED = "Product record updated successfully. id: %d.";
         public static final String RECORD_UPDATED_ERROR = "Product record cannot be updated. Something went wrong.";
         public static final String RECORD_DELETED_ERROR = "Product record cannot be deleted successfully. id: %d.";
+        public static final String ID_CANT_BE_EMPTY = "Product id cannot be empty.";
         public static final String INVALID_BLANK_NAME ="Product name cannot be empty.";
         public static final String INVALID_MAX_CHARACTERS_LENGTH_NAME="Product name cannot be longer than 25 characters.";
         public static final String INVALID_MAX_CHARACTERS_LENGTH_DESCRIPTION="Product description cannot be longer than 1000 characters";
@@ -50,6 +53,7 @@ public class Messages {
         public static final String  PHONE_MUST_OBEY_REGEX_RULES="Phone Number must contains only 10 digits.";
         public static final String  SURNAME_CANT_BE_EMPTY = "Surname cannot be empty.";
         public static final String  SURNAME_MUST_OBEY_REGEX_RULES="Surname can only contain alphabetic characters.";
+        public static final String  RECORD_NOT_FOUND="User cannot be found. id: %d";
         public static final String RECORD_NOT_FOUND_BY_EMAIL = "User not found by email: %s.";
         public static final String ALREADY_REGISTERED_EMAIL = "This email: %s already exists.";
         public static final String RECORD_CREATED_SUCCESSFULLY = "User created successfully.";
@@ -64,5 +68,35 @@ public class Messages {
     public static class Auth{
         public static final String INVALID_TOKEN="Token has been expaired or uncorrect.";
         public static final String VALID_TOKEN="Token is valid.";
+    }
+    //CART
+    public static class Cart {
+        public static final String ID_CANT_BE_EMPTY = "Cart id cannot be empty.";
+        public static final String RECORD_NOT_FOUND="Cart cannot be found. id: %d";
+        public static class Item {
+            public static final String RECORD_NOT_FOUND="Cart Item cannot be found. id: %d";
+
+        }
+    }
+    //ADRESS
+    public static class Adress{
+        public static final String  RECORD_NOT_FOUND = "Adress cannot be found. id: %d";
+    }
+    //
+    public static class Order{
+        public static final String  ID_CANT_BE_EMPTY = "Order id cannot be empty.";
+        public static final String RECORD_NOT_FOUND="Order cannot be found. id: %d";
+        public static final String RECORDS_FOUND_AND_LISTED = "Order records listed successfully.";
+        public static final String RECORD_NOT_FOUND_AND_LISTED_ERROR = "Order records cannot be listed, something went wrong.";
+        public static final String RECORD_FOUND = "Order found successfully. id: %d.";
+        public static final String RECORD_FOUND_BY_ORDER_CODE = "Order found successfully. Order Code: %s.";
+        public static final String RECORD_NOT_FOUND_BY_ORDER_CODE="Order cannot be found. Order Code: %s";
+        public static final String RECORD_NOT_FOUND_ERROR = "Order cannot be listed. Something went wrong.";
+        public static final String RECORD_CREATED = "Order record created successfully.";
+        public static final String RECORD_CREATED_ERROR = "Order record cannot be created. Something went wrong.";
+        public static final String RECORD_UPDATED = "Order record updated successfully. id: %d.";
+        public static final String RECORD_UPDATE_STATUS="Order record status updated to %s. id: %d";
+        public static final String RECORD_UPDATED_ERROR = "Order record cannot be updated. Something went wrong.";
+        public static final String RECORD_DELETED_ERROR = "Order record cannot be deleted successfully. id: %d.";
     }
 }

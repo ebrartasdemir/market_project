@@ -1,4 +1,4 @@
-package com.market_p.market_p.dto;
+package com.market_p.market_p.dto.Auth;
 
 import com.market_p.market_p.example.constants.Messages;
 import jakarta.validation.constraints.NotBlank;

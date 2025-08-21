@@ -1,6 +1,5 @@
-package com.market_p.market_p.dto;
+package com.market_p.market_p.dto.Auth;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data

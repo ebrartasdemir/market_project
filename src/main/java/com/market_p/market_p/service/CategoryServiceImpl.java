@@ -1,7 +1,7 @@
 package com.market_p.market_p.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.market_p.market_p.dto.CategoryResDto;
+import com.market_p.market_p.dto.Category.CategoryResDto;
 import com.market_p.market_p.entity.Category;
 import com.market_p.market_p.example.constants.Messages;
 import com.market_p.market_p.mapper.CategoryMapper;
@@ -34,7 +34,7 @@ public class CategoryServiceImpl implements CategoryService {
         List<Category> categoryList = categoryRepository.findAll();
         List<CategoryResDto> categoryResDtoList=categoryMapper.categoryListToCategoryResDtoList(categoryList);
         logger.info("[CategoryService] Output: {}",categoryResDtoList);
-        logger.info("[CategoryService] Listed Successfully");//buradaki mesaj da mı constant olacak?
+        logger.info("[CategoryService] Listed Successfully");
         return categoryResDtoList;
     }
 
@@ -54,13 +54,9 @@ public class CategoryServiceImpl implements CategoryService {
     public void createCategory(Category category) {
         logger.info("[CategoryService] Service Method: createCategory - ( category ) - /------------");
         logger.info("[CategoryService] Input: category => {}",toJson(category));
+        categoryRepository.save(category);
         logger.info("[CategoryService] Output: null");
-        if (category.getName() != null) {
-            categoryRepository.save(category);
-            logger.info("[CategoryService] Created Successfully");
-        }
-        logger.warn("[CategoryService] Create Failed");
-
+        logger.info("[CategoryService] Created Successfully");
     }
 
     @Override

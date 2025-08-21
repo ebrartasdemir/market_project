@@ -1,11 +1,12 @@
 package com.market_p.market_p.service;
 
-import com.market_p.market_p.dto.ProductReqDto;
-import com.market_p.market_p.dto.ProductResDto;
+import com.market_p.market_p.dto.Product.ProductReqDto;
+import com.market_p.market_p.dto.Product.ProductResDto;
 import com.market_p.market_p.entity.Category;
 import com.market_p.market_p.entity.Product;
 import com.market_p.market_p.example.constants.Messages;
 import com.market_p.market_p.mapper.ProductMapper;
+import com.market_p.market_p.repository.CategoryRepository;
 import com.market_p.market_p.repository.ProductRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +26,8 @@ public class ProductServiceImpl implements ProductService {
     private ProductMapper productMapper;
     private String message;
     private static final Logger logger= LoggerFactory.getLogger(CategoryServiceImpl.class);
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     @Override
     public List<ProductResDto> getAllProducts() {
@@ -78,6 +81,9 @@ public class ProductServiceImpl implements ProductService {
         if(newProduct==null||newProduct.getName()==null || newProduct.getName().equals(""))return;
         if(newProduct.getCategoryId()==0) return;
         Product product=productMapper.productReqDtoToProduct(newProduct);
+        Category category=categoryRepository.findById(newProduct.getCategoryId()).orElse(null);
+        if(category==null){throw new RuntimeException(String.format(Messages.Category.RECORD_NOT_FOUND,newProduct.getCategoryId()));}
+        product.setCategory(category);
         if(product.getCategory()!=null){
             productRepository.save(product);
             logger.info("[ProductService] Output: null");
@@ -102,6 +108,9 @@ public class ProductServiceImpl implements ProductService {
             throw new RuntimeException(message);}
         if(optProduct.isPresent()) {
             Product newProduct=productMapper.productReqDtoToProduct(productReqDto);
+            Category newCategory=categoryRepository.findById(newProduct.getCategory().getId()).orElse(null);
+            if(newCategory==null){throw new RuntimeException(String.format(Messages.Category.RECORD_NOT_FOUND,newProduct.getCategory().getId()));}
+            newProduct.setCategory(newCategory);
             String newName=newProduct.getName();
             String newDescription=newProduct.getDescription();
             int newQuantity=newProduct.getQuantity();

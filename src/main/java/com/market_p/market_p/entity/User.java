@@ -9,7 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 
-@Table(name="User")
+@Table(name="users")
 @Entity
 public class User implements UserDetails {
     @Id
@@ -20,19 +20,26 @@ public class User implements UserDetails {
     private String password;
     private String email;
     private String phone;
-    private List<String> addresses;
+    @OneToMany(mappedBy = "user")
+    @JsonBackReference
+    private List<Adress> addresses;
     @ManyToOne
     @JoinColumn(name = "role_id")
     @JsonBackReference("role-user")
     private Role role;
+    @OneToOne(mappedBy="user")
+    private Cart cart;
 
-    public User(String name,String surname, String password, String email, String phone, Role role) {
+
+
+    public User(String name,String surname, String password, String email, String phone, Role role,Cart cart) {
         this.name = name;
         this.surname = surname;
         this.password = password;
         this.email = email;
         this.phone = phone;
         this.role = role;
+        this.cart = cart;
     }
     public User() {}
 
@@ -105,15 +112,26 @@ public class User implements UserDetails {
         this.phone = phone;
     }
 
-    public List<String> getAddresses() {
+    public List<Adress> getAddresses() {
         return addresses;
     }
 
-    public void setAddresses(List<String> addresses) {
+    public void setAddresses(List<Adress> addresses) {
         this.addresses = addresses;
     }
 
 
+    public Cart getCart() {
+        return cart;
+    }
+
+    public void setCart(Cart cart) {
+        this.cart = cart;
+    }
+
+    public Role getRole() {
+        return role;
+    }
 
     public void setRole(Role role) {
         this.role = role;

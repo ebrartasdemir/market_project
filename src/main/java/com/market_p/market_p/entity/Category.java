@@ -8,8 +8,9 @@ import jakarta.validation.constraints.Size;
 
 import java.util.List;
 
+
 @Entity
-@Table(name = "Category")
+@Table(name = "Categories")
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

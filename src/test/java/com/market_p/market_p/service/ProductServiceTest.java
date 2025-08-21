@@ -2,8 +2,8 @@ package com.market_p.market_p.service;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.market_p.market_p.dto.ProductReqDto;
-import com.market_p.market_p.dto.ProductResDto;
+import com.market_p.market_p.dto.Product.ProductReqDto;
+import com.market_p.market_p.dto.Product.ProductResDto;
 import com.market_p.market_p.entity.Category;
 import com.market_p.market_p.entity.Product;
 import com.market_p.market_p.example.constants.Messages;

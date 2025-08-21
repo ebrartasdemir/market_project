@@ -1,6 +1,10 @@
 package com.market_p.market_p.controller;
 
 import com.market_p.market_p.dto.*;
+import com.market_p.market_p.dto.Auth.AuthResponse;
+import com.market_p.market_p.dto.Auth.LoginDto;
+import com.market_p.market_p.dto.Auth.RegisterDto;
+import com.market_p.market_p.dto.Category.CategoryResDto;
 import com.market_p.market_p.example.constants.Messages;
 import com.market_p.market_p.service.AuthServiceImpl;
 import jakarta.validation.constraints.NotNull;
@@ -25,7 +29,7 @@ public class AuthController {
     @Autowired
     private AuthServiceImpl authService;
     @PostMapping("/register")
-    public ResponseEntity register(@RequestBody @NotNull RegisterDto  registerDto) {
+    public ResponseEntity register(@RequestBody @NotNull RegisterDto registerDto) {
         try{
             logger.info("[AuthController] Api: GET=> /auth/register /------------");
             logger.info("[AuthController] Request Body: DTO => {} ",registerDto);

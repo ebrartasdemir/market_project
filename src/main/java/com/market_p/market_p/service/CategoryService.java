@@ -1,10 +1,9 @@
 package com.market_p.market_p.service;
 
-import com.market_p.market_p.dto.CategoryResDto;
+import com.market_p.market_p.dto.Category.CategoryResDto;
 import com.market_p.market_p.entity.Category;
 
 import java.util.List;
-import java.util.Map;
 
 public interface CategoryService {
     List<CategoryResDto> getAllCategories();

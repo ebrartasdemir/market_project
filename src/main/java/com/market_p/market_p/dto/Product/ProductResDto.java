@@ -1,4 +1,4 @@
-package com.market_p.market_p.dto;
+package com.market_p.market_p.dto.Product;
 
 public class ProductResDto {
     private String name;

@@ -6,11 +6,10 @@ import com.market_p.market_p.example.constants.Messages;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 @Entity
-@Table(name = "Product")
+@Table(name = "products")
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,9 +21,9 @@ public class Product {
     @Size(max=1000,message =Messages.Product.INVALID_MAX_CHARACTERS_LENGTH_DESCRIPTION )
     private String description;
     @Min(value = 0,message = Messages.Product.INVALID_PRICE_CANT_BE_NEGATIVE)
-    private double price;//?
+    private double price;
     @Min(value = 0,message =  Messages.Product.INVALID_QUANTITY_CANT_BE_NEGATIVE)
-    private int quantity;//?
+    private int quantity;
     @ManyToOne
     @JoinColumn(name="category_id")
     @JsonBackReference

@@ -1,10 +1,8 @@
 package com.market_p.market_p.service;
 
 
-import com.market_p.market_p.dto.CategoryResDto;
-import com.market_p.market_p.dto.ProductReqDto;
+import com.market_p.market_p.dto.Category.CategoryResDto;
 import com.market_p.market_p.entity.Category;
-import com.market_p.market_p.entity.Product;
 import com.market_p.market_p.example.constants.Messages;
 import com.market_p.market_p.mapper.CategoryMapper;
 import com.market_p.market_p.repository.CategoryRepository;

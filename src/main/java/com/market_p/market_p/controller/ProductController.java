@@ -1,8 +1,8 @@
 package com.market_p.market_p.controller;
 
 import com.market_p.market_p.dto.ApiResponse;
-import com.market_p.market_p.dto.ProductReqDto;
-import com.market_p.market_p.dto.ProductResDto;
+import com.market_p.market_p.dto.Product.ProductReqDto;
+import com.market_p.market_p.dto.Product.ProductResDto;
 import com.market_p.market_p.example.constants.Messages;
 import com.market_p.market_p.service.ProductService;
 import jakarta.validation.Valid;

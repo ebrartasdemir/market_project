@@ -3,7 +3,7 @@ package com.market_p.market_p.contoller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.market_p.market_p.controller.CategoryController;
 import com.market_p.market_p.dto.ApiResponse;
-import com.market_p.market_p.dto.CategoryResDto;
+import com.market_p.market_p.dto.Category.CategoryResDto;
 import com.market_p.market_p.entity.Category;
 import com.market_p.market_p.example.constants.Messages;
 import com.market_p.market_p.service.CategoryServiceImpl;

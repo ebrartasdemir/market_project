@@ -1,7 +1,7 @@
 package com.market_p.market_p.mapper;
 
-import com.market_p.market_p.dto.ProductReqDto;
-import com.market_p.market_p.dto.ProductResDto;
+import com.market_p.market_p.dto.Product.ProductReqDto;
+import com.market_p.market_p.dto.Product.ProductResDto;
 import com.market_p.market_p.entity.Product;
 import com.market_p.market_p.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +34,6 @@ public class ProductMapper {
         product.setDescription(productReqDto.getDescription());
         product.setQuantity(productReqDto.getQuantity());
         product.setPrice(productReqDto.getPrice());
-        product.setCategory(categoryRepository.getById(productReqDto.getCategoryId()));
         return product;
     }
 }

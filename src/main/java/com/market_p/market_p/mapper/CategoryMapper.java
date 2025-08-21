@@ -1,6 +1,6 @@
 package com.market_p.market_p.mapper;
 
-import com.market_p.market_p.dto.CategoryResDto;
+import com.market_p.market_p.dto.Category.CategoryResDto;
 import com.market_p.market_p.entity.Category;
 import org.springframework.stereotype.Component;
 

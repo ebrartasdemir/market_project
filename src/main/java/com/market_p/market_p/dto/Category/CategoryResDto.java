@@ -1,4 +1,4 @@
-package com.market_p.market_p.dto;
+package com.market_p.market_p.dto.Category;
 
 public class CategoryResDto {
     private String name;

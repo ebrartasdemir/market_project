@@ -1,11 +1,13 @@
 package com.market_p.market_p.service;
 
-import com.market_p.market_p.dto.AuthResponse;
-import com.market_p.market_p.dto.LoginDto;
-import com.market_p.market_p.dto.RegisterDto;
+import com.market_p.market_p.dto.Auth.AuthResponse;
+import com.market_p.market_p.dto.Auth.LoginDto;
+import com.market_p.market_p.dto.Auth.RegisterDto;
+import com.market_p.market_p.entity.Role;
 import com.market_p.market_p.entity.User;
 import com.market_p.market_p.example.constants.Messages;
 import com.market_p.market_p.mapper.UserMapper;
+import com.market_p.market_p.repository.RoleRepository;
 import com.market_p.market_p.repository.UserRepository;
 import com.market_p.market_p.security.JWTGenerator;
 import org.slf4j.Logger;
@@ -31,7 +33,10 @@ public class AuthServiceImpl implements AuthService {
     PasswordEncoder passwordEncoder;
     @Autowired
     private JWTGenerator jwtGenerator;
+    @Autowired
+    private RoleRepository roleRepository;
     private String message;
+
 
     @Override
     public void register(RegisterDto registerDto) {
@@ -45,6 +50,8 @@ public class AuthServiceImpl implements AuthService {
         }
         String password = passwordEncoder.encode(registerDto.getPassword());
         User user= userMapper.registerDtoToUser(password,registerDto);
+        Role role=roleRepository.findByTitle("USER").get();
+        user.setRole(role);
         userRepository.save(user);
         logger.info("[AuthService] Output : null");
         logger.info("[AuthService] Created Successfully");
