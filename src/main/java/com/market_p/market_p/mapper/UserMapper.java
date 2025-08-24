@@ -14,6 +14,6 @@ public class UserMapper {
     RoleRepository roleRepository;
 
     public User registerDtoToUser(String password,RegisterDto registerDto) {
-        return new User(registerDto.getFirstName(), registerDto.getSurname(),password, registerDto.getEmail(), registerDto.getPhoneNum(),null,new Cart());
+        return new User(registerDto.getFirstName(), registerDto.getSurname(),password, registerDto.getEmail(), registerDto.getPhoneNum(),null);
     }
 }

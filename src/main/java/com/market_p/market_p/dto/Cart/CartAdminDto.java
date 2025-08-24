@@ -6,11 +6,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
-
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class CartDto {
-    private List<CartItemResDto> cartItems;
+@NoArgsConstructor
+public class CartAdminDto {
+    private int userId;
+    private int cartId;
     private double totalPrice;
+    private List<CartItemResDto> cartItems;
 }

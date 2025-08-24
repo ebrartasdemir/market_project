@@ -1,5 +1,6 @@
 package com.market_p.market_p.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -15,6 +16,7 @@ public class Cart {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "customer_id",referencedColumnName = "id")
     @NotNull()
+    @JsonBackReference
     private User user;
     private double totalPrice;
     @OneToMany(mappedBy="cart")
@@ -29,6 +31,9 @@ public class Cart {
         this.cartItems = cartItems;
         this.totalPrice = cartItems.stream().mapToDouble(CartItem::getPrice).sum();
         this.orders = orders;
+    }
+    public Cart(User user) {
+        this.user = user;
     }
 
     public Cart() {

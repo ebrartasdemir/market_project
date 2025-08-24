@@ -19,6 +19,7 @@ public class OrderMapper {
         orderResDto.setOrderDate(order.getOrderDate());
         orderResDto.setOrderItemList(order.getOrderItems());
         orderResDto.setPrice(order.getTotalPrice());
+        orderResDto.setUserId(order.getUser().getId());
         return orderResDto;
     }
     public List<OrderResDto> orderToOrderDtoList(List<Order> orderList){

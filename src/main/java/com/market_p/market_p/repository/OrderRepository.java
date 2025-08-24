@@ -7,9 +7,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface OrderRepository extends JpaRepository<Order,Integer> {
-    List<Order> findAllByUser(int userId);
-    List<Order> findAllByUserAndStatus(int userId, Status status);
+    List<Order> findAllByUserId(int userId);
+    List<Order> findAllByUserIdAndStatus(int userId, Status status);
     Order findOrderByOrderCode(String orderCode);
 
     boolean existsByOrderCode(String orderCode);
+
+    List<Order> findAllByStatus(Status status);
 }

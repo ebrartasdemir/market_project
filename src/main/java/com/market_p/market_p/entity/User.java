@@ -1,6 +1,7 @@
 package com.market_p.market_p.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -28,18 +29,21 @@ public class User implements UserDetails {
     @JsonBackReference("role-user")
     private Role role;
     @OneToOne(mappedBy="user")
+    @JsonManagedReference
     private Cart cart;
+    @OneToMany(mappedBy = "user")
+    @JsonManagedReference
+    private List<Order> orders;
 
 
 
-    public User(String name,String surname, String password, String email, String phone, Role role,Cart cart) {
+    public User(String name,String surname, String password, String email, String phone, Role role) {
         this.name = name;
         this.surname = surname;
         this.password = password;
         this.email = email;
         this.phone = phone;
         this.role = role;
-        this.cart = cart;
     }
     public User() {}
 

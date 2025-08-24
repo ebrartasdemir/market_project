@@ -13,6 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 public class OrderResDto {
     private int id;
+    private int userId;
     private String orderCode;
     private Status status;
     private Date orderDate;

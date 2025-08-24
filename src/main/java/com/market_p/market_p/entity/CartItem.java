@@ -17,11 +17,12 @@ public class CartItem {
     @ManyToOne
     @JoinColumn(name = "product_id")
     @NotNull(message = Messages.Product.CANT_BE_EMPTY)
+    @JsonBackReference
     private Product product;
     private double price;
     private int quantity=1;
     @ManyToOne
-    @JoinColumn(name="card_id")
+    @JoinColumn(name="cart_id")
     @JsonBackReference
     private Cart cart;
 
@@ -64,7 +65,9 @@ public class CartItem {
     public double getPrice() {
         return price;
     }
-
+    public void setPrice(double price) {
+        this.price = price;
+    }
 
     public Product getProduct() {
         return product;

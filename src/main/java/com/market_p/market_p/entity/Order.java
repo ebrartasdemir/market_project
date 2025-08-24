@@ -1,6 +1,7 @@
 package com.market_p.market_p.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -22,15 +23,17 @@ public class Order {
     @JoinColumn(name = "user_id")
     private User user;
     @ManyToOne
-    @JsonBackReference
+    @JsonManagedReference
     @JoinColumn(name = "cart_id")
     private Cart cart;
     private Date orderDate;
     @ManyToOne
     @JoinColumn(name="adress_id")
+    @JsonBackReference
     private Adress adress;
     private double totalPrice;
     @OneToMany(mappedBy = "order")
+    @JsonManagedReference
     private List<OrderItem> orderItems;
 
 

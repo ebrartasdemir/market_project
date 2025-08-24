@@ -2,11 +2,14 @@ package com.market_p.market_p.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.market_p.market_p.example.constants.Messages;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+
+import java.util.List;
 
 @Entity
 @Table(name = "products")
@@ -28,6 +31,12 @@ public class Product {
     @JoinColumn(name="category_id")
     @JsonBackReference
     private Category category;
+    @OneToMany(mappedBy = "product")
+    @JsonManagedReference
+    private List<CartItem> cartItems;
+    @OneToMany(mappedBy = "product")
+    @JsonManagedReference
+    private List<OrderItem> orderItems;
 
     public Product() {}
     public Product(Category category, int quantity, double price, String description, String name) {
@@ -70,6 +79,22 @@ public class Product {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public List<CartItem> getCartItems() {
+        return cartItems;
+    }
+
+    public void setCartItems(List<CartItem> cartItems) {
+        this.cartItems = cartItems;
+    }
+
+    public List<OrderItem> getOrderItems() {
+        return orderItems;
+    }
+
+    public void setOrderItems(List<OrderItem> orderItems) {
+        this.orderItems = orderItems;
     }
 
     public int getQuantity() {

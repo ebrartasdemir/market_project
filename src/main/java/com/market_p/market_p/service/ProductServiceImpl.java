@@ -76,9 +76,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void createProduct(ProductReqDto newProduct) {
-        logger.info("[ProductService] Service Method: getProductByName - ( name ) -  ------------");
+        logger.info("[ProductService] Service Method: createProduct - ( productReqDto ) -  ------------");
         logger.info("[ProductService] Input: DTO => {}",toJson(newProduct));
-        if(newProduct==null||newProduct.getName()==null || newProduct.getName().equals(""))return;
+        if(newProduct==null||newProduct.getName()==null || newProduct.getName().isEmpty())return;
         if(newProduct.getCategoryId()==0) return;
         Product product=productMapper.productReqDtoToProduct(newProduct);
         Category category=categoryRepository.findById(newProduct.getCategoryId()).orElse(null);
@@ -95,7 +95,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void updateProduct(int id, ProductReqDto productReqDto) {
         logger.info("[ProductService] Service Method: updateProduct - ( id ) -  ------------");
-        logger.info("[ProductService] Input: id => {}",id);
+        logger.info("[ProductService] Input: id => {}, productReqDto => {}",id,productReqDto);
         Optional<Product> optProduct= productRepository.findById(id);
         if(optProduct.isEmpty()) throw new RuntimeException(String.format(Messages.Product.RECORD_NOT_FOUND,id));
         if(productReqDto.getName()==null &&
@@ -105,6 +105,7 @@ public class ProductServiceImpl implements ProductService {
           productReqDto.getQuantity()==-1)
         {message=Messages.EMPTY_BODY;
             logger.error("[ProductService] Error: {}",message);
+            logger.warn("[ProductService] Update Failed");
             throw new RuntimeException(message);}
         if(optProduct.isPresent()) {
             Product newProduct=productMapper.productReqDtoToProduct(productReqDto);
